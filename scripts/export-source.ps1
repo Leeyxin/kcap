@@ -10,7 +10,7 @@ if ($destinationPath -eq $projectRoot -or !$destinationPath.StartsWith($projectR
 }
 
 $files = @(
-    ".gitattributes", ".gitignore", "README.md", "index.html",
+    ".gitattributes", ".gitignore", "README.md", "README.en.md", "index.html",
     "package.json", "package-lock.json", "tsconfig.json", "vite.config.ts",
     "src-tauri/Cargo.toml", "src-tauri/Cargo.lock", "src-tauri/build.rs", "src-tauri/tauri.conf.json"
 )
