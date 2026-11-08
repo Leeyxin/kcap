@@ -14,7 +14,7 @@ $files = @(
     "package.json", "package-lock.json", "tsconfig.json", "vite.config.ts",
     "src-tauri/Cargo.toml", "src-tauri/Cargo.lock", "src-tauri/build.rs", "src-tauri/tauri.conf.json"
 )
-$folders = @(".github", "scripts", "src", "src-tauri/src", "src-tauri/capabilities", "src-tauri/icons")
+$folders = @(".github", "docs", "scripts", "src", "src-tauri/src", "src-tauri/capabilities", "src-tauri/icons")
 foreach ($folder in $folders) {
     $files += Get-ChildItem -LiteralPath (Join-Path $projectRoot $folder) -Recurse -File | ForEach-Object {
         $_.FullName.Substring($projectRoot.Length + 1)

@@ -1,60 +1,81 @@
 # KCap
 
-基于 Tauri 2、React 和 Windows 原生截图 API 的轻量截图贴图工具。
+截图，然后把它贴在桌面上。
 
-## 下载
+KCap 是一款 Windows 截图贴图工具。截取屏幕上的任意区域，让多张截图同时悬浮在桌面上，方便对照资料、查看参考图或临时记下信息。需要分享时，也可以直接标注、复制或保存图片。
 
-打开 [最新正式版](https://github.com/Leeyxin/kcap/releases/latest)，下载适合你的版本：
+## 下载与安装
 
-- [Windows x64 安装版](https://github.com/Leeyxin/kcap/releases/latest/download/KCap-windows-x64-setup.exe)
-- [Windows x64 便携版 ZIP](https://github.com/Leeyxin/kcap/releases/latest/download/KCap-windows-x64-portable.zip)
+支持 **Windows 10 / 11，64 位（x64）**。
 
-这些链接会在首个正式版构建并发布成功后生效。便携版解压后运行 `kcap.exe`。支持 Windows 10/11 x64，需要 Microsoft Edge WebView2 Runtime；安装版在缺少运行时的情况下会引导安装，便携版需要系统已安装运行时。目前未配置代码签名，Windows 可能提示发布者未知。
+| 版本 | 下载 | 使用方式 |
+| --- | --- | --- |
+| 安装版 | [下载安装程序](https://github.com/Leeyxin/kcap/releases/latest/download/KCap-windows-x64-setup.exe) | 下载后运行，按提示安装。 |
+| 便携版 | [下载 ZIP 压缩包](https://github.com/Leeyxin/kcap/releases/latest/download/KCap-windows-x64-portable.zip) | 解压后运行 `kcap.exe`，无需安装。 |
 
-## 功能
+以上链接始终指向最新正式版。历史版本和更新说明见 [版本发布页](https://github.com/Leeyxin/kcap/releases)。
 
-- 任意区域截图，每张截图独立悬浮，可同时打开多张。
-- 左键拖动截图，右键打开复制、保存、标注和置顶菜单。
-- PNG 保存到用户的 `Pictures/KCap` 目录。
-- 箭头、矩形和画笔标注，可选择颜色与线宽；复制、保存时合成标注。
-- 小横条关闭后隐藏到托盘，可通过托盘图标重新显示。
-- 优先使用 `Ctrl+Shift+A` 截图；冲突时尝试其他组合，实际快捷键显示在小横条上。
+KCap 需要 Microsoft Edge WebView2 运行时。安装版会在缺少运行时时引导安装；使用便携版时，请确保电脑已安装该运行时。
 
-## 本地开发
+## 开始截图
 
-先安装 Node.js 24、Rust stable、Visual Studio C++ 构建工具和 WebView2。
+1. 打开 KCap，桌面上会出现一条小工具栏。
+2. 点击「截图」，或按工具栏上显示的快捷键。
+3. 按住鼠标左键框选区域，松开即可生成一个悬浮截图窗口。按 `Esc` 可以取消截图。
 
-```powershell
-npm ci
-npm run tauri:dev
-```
+继续截图就会打开新的窗口，之前的截图会保留。每张截图都可以单独移动和关闭。
 
-构建安装包：
+默认优先使用 `Ctrl+Shift+A`。如果这个组合被其他程序占用，KCap 会尝试其他快捷键，请以工具栏显示的组合为准。如果没有显示快捷键，仍可通过工具栏或托盘菜单截图。
 
-```powershell
-npm run release:check
-npm run tauri -- build --bundles nsis -- --locked
-./scripts/package-release.ps1
-```
+## 使用悬浮截图
 
-安装版、便携版与校验文件会生成到 `build/release`。
+| 想做什么 | 操作 |
+| --- | --- |
+| 移动截图 | 按住截图上的鼠标左键拖动。 |
+| 打开操作菜单 | 在截图上点击鼠标右键。 |
+| 复制图片 | 右键选择「复制图片」，再到聊天窗口或文档中粘贴。 |
+| 保存图片 | 右键选择「保存图片」，以 PNG 格式保存到本机。 |
+| 调整置顶状态 | 右键选择「取消置顶」或「保持置顶」。 |
+| 关闭一张截图 | 右键选择「关闭此图」。 |
 
-## GitHub 自动编译与发布
+图片默认保存在用户目录下的 `Pictures\KCap` 文件夹，例如 `C:\Users\你的用户名\Pictures\KCap`。保存成功后，窗口中会提示文件路径。
 
-工作流是 [Windows Build and Release](https://github.com/Leeyxin/kcap/actions/workflows/release.yml)。
+**截图不会自动保存。** 悬浮窗口适合临时查看；需要保留的图片，请在关闭窗口或退出程序前主动保存。
 
-- 推送 `main` / `master`、提交 PR，或手动运行工作流：编译 Windows x64 安装版和便携版，在本次 Actions 的 Artifacts 中提供下载，保留 14 天。
-- 推送 `v*` 版本标签：构建成功后，自动创建 GitHub Release 并附上安装版、便携版与 SHA-256 校验文件。
-- 发布权限使用 GitHub 自动提供的 `GITHUB_TOKEN`，无需手动添加个人访问令牌。仓库或组织策略需要允许 Actions 创建 Release。
+## 给截图做标注
 
-发布当前的 `0.1.2`：
+在截图上右键选择「标注」，即可使用箭头、矩形和画笔，也可以选择颜色与线宽。
 
-```powershell
-git push -u origin main
-git tag v0.1.2
-git push origin v0.1.2
-```
+- 按住左键拖动，绘制当前选中的标注。
+- 点击「清空」，移除这张截图上的全部标注。
+- 点击「完成」，结束标注，恢复左键拖动窗口。
 
-后续版本需要同步更新 `package.json`、`package-lock.json`、`src-tauri/tauri.conf.json`、`src-tauri/Cargo.toml` 和 `src-tauri/Cargo.lock` 中 KCap 自身的版本，再提交并推送对应标签。工作流会检查版本一致性，标签与版本不匹配时不会发布。
+复制或保存图片时，标注会一起包含在图片中。
 
-如果当前目录的 Git 历史还包含其他项目，可以先运行 `./scripts/export-source.ps1`，将 KCap 源代码导出到 `build/publish/kcap`，再在该目录中初始化独立仓库上传。此操作只复制 KCap 所需文件，不包含其他项目、旧 Git 历史、依赖目录或编译产物。
+## 隐藏工具栏与退出
+
+点击小工具栏上的 `x` 只会隐藏工具栏，程序仍在运行，已有的悬浮截图也会保留。
+
+需要重新显示工具栏时，左键点击 Windows 右下角通知区域中的 KCap 托盘图标。如果没有看到图标，可以展开通知区域的隐藏图标列表。右键点击托盘图标，也可以选择「显示工具栏」或直接截图。
+
+要完全退出，请在托盘菜单中选择「退出」，或在截图右键菜单中选择「退出全部」。退出会关闭所有悬浮截图，请先保存需要保留的图片。
+
+## 常见问题
+
+### 打开时提示“发布者未知”怎么办？
+
+当前版本尚未进行代码签名，Windows 可能显示此提示。请核对下载来源是否为本仓库的 [正式发布页](https://github.com/Leeyxin/kcap/releases)。
+
+### 为什么无法拖动截图？
+
+如果正在标注，左键用于绘图。先点击标注工具栏上的「完成」，再拖动截图。
+
+### 为什么按快捷键没有反应？
+
+先检查工具栏上实际显示的快捷键。组合键被占用时，KCap 可能会改用其他组合；也可以直接点击「截图」，或使用托盘里的截图菜单。
+
+## 问题反馈
+
+遇到问题或有功能建议，欢迎 [提交 Issue](https://github.com/Leeyxin/kcap/issues)。反馈时请尽量说明 KCap 版本、Windows 版本、操作步骤和出现的提示，便于复现和排查。
+
+开发与打包说明见 [开发文档](docs/DEVELOPMENT.md)。
