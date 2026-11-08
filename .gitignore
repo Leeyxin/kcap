@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+src-tauri/target/
+src-tauri/gen/
+__pycache__/
+*.pyc
+*.spec
+
+.DS_Store
+*.log
