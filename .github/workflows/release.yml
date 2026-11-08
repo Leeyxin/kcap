@@ -45,6 +45,19 @@ jobs:
       - name: Verify release version
         run: npm run release:check
 
+      - name: Locate installer tools cache
+        id: installer-tools
+        run: '"path=$env:LOCALAPPDATA/tauri" >> $env:GITHUB_OUTPUT'
+
+      - name: Cache installer tools
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.installer-tools.outputs.path }}
+          key: nsis-windows-${{ hashFiles('scripts/prepare-nsis.ps1', 'package-lock.json') }}
+
+      - name: Download and verify installer tools with retries
+        run: ./scripts/prepare-nsis.ps1
+
       - name: Build executable and NSIS installer
         run: npm run tauri -- build --bundles nsis -- --locked
 
