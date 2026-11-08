@@ -7,6 +7,11 @@ const readJson = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url
 const pkg = readJson("../package.json");
 const lock = readJson("../package-lock.json");
 const config = readJson("../src-tauri/tauri.conf.json");
+const incompletePackage = Object.entries(lock.packages).find(([, info]) => !info.version && !info.link);
+if (incompletePackage) {
+  throw new Error(`Incomplete lockfile entry: ${incompletePackage[0]}. Regenerate package-lock.json before releasing.`);
+}
+
 const metadata = spawnSync(
   "cargo",
   ["metadata", "--no-deps", "--format-version", "1", "--locked", "--manifest-path", "src-tauri/Cargo.toml"],

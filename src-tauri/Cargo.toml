@@ -1,6 +1,6 @@
 [package]
 name = "kcap"
-version = "0.1.0"
+version = "0.1.1"
 description = "A modern floating screenshot tool"
 authors = ["KCap"]
 edition = "2021"
